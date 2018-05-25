@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>360度旋转动画 Canvas篇</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		.wrap {
+			width: 100%;
+			padding: 100px;
+			border: yellowgreen 1px dashed;
+		}
+		.box {
+			padding: 10px;
+			border: red 1px dotted;
+		}
+		.myPhoto {
+			border: skyblue 1px dashed;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="box">
+			<canvas id="myPhoto" class="myPhoto">当前浏览器不支持canvas组件请升级！</canvas>
+		</div>
+	</div>
+	<script>
+		let window_W = window.innerWidth;
+		let window_H = window.innerHeight;
+		let wrap = document.querySelector(".wrap");
+		wrap.style.height = window_H + "px";
+
+		let c = document.getElementById("myPhoto");
+		let ctx = c.getContext("2d");
+
+		let cW = c.width = 300;
+		let cH = c.height = 300;
+		let fontSize = 30; //字体大小
+		let lineWidth = 8;  //圆的边框线尺寸
+		let lineCap="square"; //线帽的样式
+		let x = y = cW / 2; //中间点坐标
+		let cR = x - 6 * lineWidth;
+		let vAngle = (Math.PI / 180); //偏移角度
+		let startAngleTop = -(Math.PI); // 上半圆开始角度
+		let endAngleTop = Math.PI + startAngleTop; //上半圆结束角度
+		let tmpAngleTop = startAngleTop; //上半圆临时角度
+		let startAngleBtm = 0; //下半圆开始角度
+		let endAngleBtm = Math.PI + startAngleBtm; //下半圆结束角度
+		let tmpAngleBtm = startAngleBtm; //下半圆临时角度
+
+
+		function draw() {
+			if(tmpAngleTop >= endAngleTop) {
+				// tmpAngleTop = startAngleTop;
+				return;
+			}else if(tmpAngleTop + vAngle > endAngleTop) {
+				tmpAngleTop = endAngleTop;
+			}else {
+				tmpAngleTop += vAngle;
+			};
+			if(tmpAngleBtm >= endAngleBtm) {
+				// tmpAngleBtm = startAngleBtm;
+				return;
+			}else if(tmpAngleBtm + vAngle > endAngleBtm) {
+				tmpAngleBtm = endAngleBtm;
+			}else {
+				tmpAngleBtm += vAngle;
+			}
+			ctx.clearRect(0, 0, cW, cH);
+
+			// 上半圆圈
+			ctx.beginPath();
+			ctx.lineWidth = lineWidth;
+			ctx.lineCap = lineCap;
+			ctx.strokeStyle = "#ccff33";
+			ctx.arc(x, y, cR, startAngleTop, tmpAngleTop);
+			ctx.stroke();
+			ctx.closePath();
+
+
+			// 下半圆圈
+			ctx.beginPath();
+			ctx.lineWidth = lineWidth;
+			ctx.lineCap = lineCap;
+			ctx.strokeStyle = "#ccff33";
+			ctx.arc(x, y, cR, startAngleBtm, tmpAngleBtm);
+			ctx.stroke();
+			ctx.closePath();
+
+
+			// 路径圆圈
+			ctx.beginPath();
+			// ctx.lineWidth = lineWidth; //直接显示实心外圆圈
+			ctx.lineWidth = 1; //实心外圆圈
+			// ctx.lineWidth = 5; //空心外圆圈
+			ctx.strokeStyle = "#f2ffe5";
+			ctx.arc(x, y, cR, 0, 2*Math.PI);
+			ctx.stroke();
+			ctx.closePath();
+
+
+			// 写字
+			ctx.beginPath();
+			ctx.fillStyle = "#1d89d5"
+			ctx.font = fontSize + "px Wawati SC, KaiTi, HYShangWeiShouShuW, Microsoft Yahei";
+			ctx.textAlign = "center";
+			ctx.fillText( Math.round((tmpAngleTop - startAngleTop) / (endAngleTop - startAngleTop) * 100) + "%", x, y + fontSize/3)
+			ctx.closePath();
+
+			requestAnimationFrame(draw);
+		};
+
+		draw();
+
+	</script>
+</body>
+</html>

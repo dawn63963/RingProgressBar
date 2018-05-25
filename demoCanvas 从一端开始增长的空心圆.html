@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>360度旋转动画 Canvas篇</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		.wrap {
+			width: 100%;
+			padding: 100px;
+			border: yellowgreen 1px dashed;
+		}
+		.box {
+			padding: 10px;
+			border: red 1px dotted;
+		}
+		.myPhoto,
+		.myCanvas {
+			border: skyblue 1px dashed;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<h4><a href="https://blog.csdn.net/lecepin/article/details/53454396">参考网址</a></h4>
+		<div class="box">
+			<canvas id="myPhoto" class="myPhoto">当前浏览器不支持canvas组件请升级！</canvas>
+		</div>
+		<div class="box">
+			<canvas id="myCanvas" class="myCanvas">当前浏览器不支持canvas组件请升级！</canvas>
+		</div>
+	</div>
+	<script>
+		let window_W = window.innerWidth;
+		let window_H = window.innerHeight;
+		let wrap = document.querySelector(".wrap");
+		wrap.style.height = window_H + "px";
+
+		let c = document.getElementById("myPhoto");
+		let ctx = c.getContext("2d");
+
+		let cW = c.width = 300;
+		let cH = c.height = 300;
+		let lineWidth = 5;  //圆的边框线尺寸
+		let lineCap="round"; //线帽的样式
+		let x = y = cW / 2; //中间点坐标
+		let cR = x - 6 * lineWidth;
+		let startAngle = -(1 / 2 * Math.PI); //开始角度
+		let endAngle = 2 * Math.PI + startAngle; //结束角度
+		let vAngle = (Math.PI / 180); //偏移角度
+		let tmpAngle = startAngle; //临时角度
+		let fontSize = 30; //字体大小
+
+		function draw() {
+			if(tmpAngle >= endAngle) {
+				// tmpAngle = startAngle;  无限循环
+				return;
+			}else if(tmpAngle + vAngle > endAngle) {
+				tmpAngle = endAngle;
+			}else {
+				tmpAngle += vAngle;
+			}
+			ctx.clearRect(0, 0, cW, cH);
+
+			// 圆圈
+			ctx.beginPath();
+			ctx.lineWidth = lineWidth;
+			ctx.lineCap = lineCap;
+			ctx.strokeStyle = "#ccff33";
+			ctx.arc(x, y, cR, startAngle, tmpAngle);
+			ctx.stroke();
+			ctx.closePath();
+
+			// 写字
+			ctx.beginPath();
+			ctx.fillStyle = "#1d89d5"
+			ctx.font = fontSize + "px Wawati SC, KaiTi, HYShangWeiShouShuW, Microsoft Yahei";
+			ctx.textAlign = "center";
+			ctx.fillText( Math.round((tmpAngle - startAngle) / (endAngle - startAngle) * 100) + "%", x, y + fontSize/2)
+			ctx.closePath();
+
+			requestAnimationFrame(draw);
+		};
+		draw();
+
+
+		// 带背景色
+		let myC = document.getElementById("myCanvas");
+		let myCtx = myC.getContext("2d");
+
+		let mycW = myC.width = 300;
+		let mycH = myC.height = 300;
+		let mylineWidth = 8;  //圆的边框线尺寸
+		let mylineCap="round"; //线帽的样式
+		let x0 = y0 = mycW / 2; //中间点坐标
+		let mycR = x - 5 * mylineWidth;
+		let mystartAngle = -(1 / 2 * Math.PI); //开始角度
+		let myendAngle = 2 * Math.PI + mystartAngle; //结束角度
+		let varyAngle = (Math.PI / 180); //偏移角度
+		let mytmpAngle = mystartAngle; //临时角度
+		let myfontSize = 36; //字体大小
+
+		function myDraw() {
+			if(mytmpAngle >= myendAngle) {
+				// mytmpAngle = mystartAngle;  无限循环
+				return;
+			}else if(mytmpAngle + varyAngle > myendAngle) {
+				mytmpAngle = myendAngle;
+			}else {
+				mytmpAngle += varyAngle;
+			}
+			myCtx.clearRect(0, 0, mycW, mycH);
+
+			// 背景圆圈
+			myCtx.beginPath();
+			myCtx.lineWidth = mylineWidth;
+			myCtx.strokeStyle = "#ccffff";
+			myCtx.arc(x0, y0, mycR, 0, 2*Math.PI);
+			myCtx.stroke();
+			myCtx.closePath();
+
+			// 圆圈
+			myCtx.beginPath();
+			myCtx.lineWidth = mylineWidth;
+			myCtx.lineCap = mylineCap;
+			myCtx.strokeStyle = "#3399ff";
+			myCtx.arc(x0, y0, mycR, mystartAngle, mytmpAngle);
+			myCtx.stroke();
+			myCtx.closePath();
+
+			// 文字
+			myCtx.beginPath();
+			myCtx.fillStyle = "#99ff33	"
+			myCtx.textAlign = "center";
+			myCtx.font = myfontSize + "px Wawati SC, KaiTi, HYShangWeiShouShuW, Microsoft Yahei";
+			myCtx.fillText(Math.round((mytmpAngle - mystartAngle) / (myendAngle - mystartAngle) * 100) + "%", x0, y0 + myfontSize/2);
+			myCtx.closePath();
+
+
+			requestAnimationFrame(myDraw);
+		};
+		myDraw();
+
+	</script>
+</body>
+</html>

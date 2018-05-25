@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+	<title>360度旋转动画 JS篇</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		html {
+			-webkit-text-size-adjust:none;
+			font-size: 16px;
+		}
+		body {
+			position: relative;
+			min-width: 310px;
+			width: 100%;
+			height: 100%;
+			margin:0 auto;
+			font-size: .875rem;
+			color: #333;
+			font-family:"微软雅黑", "PingFang SC", serif;
+		}
+		.wraps {
+			position: relative;
+			display: block;
+			width: 100%;
+			height: 100%;
+			background-color: #3B8DFC;
+			border: #3B8DFC 1px solid;
+		}
+		.box {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -7.5rem;
+			margin-left: -7.5rem;
+			padding: 1rem;
+			width: 15rem;
+			height: 15rem;
+			border-radius: 50%;
+		}
+		.circle {
+			position: absolute;
+			top: -.1rem;
+			left: -.1rem;
+		    width: 15.2rem;
+		    height: 15.2rem;
+		    border-radius: 50%;
+		    transition: clip-path .2s;
+		    -webkit-mask: radial-gradient(transparent, transparent 110px, #000 110px);
+		    mask: radial-gradient(transparent 110px, #000 110px);
+		    overflow: hidden;
+
+		    animation: rotateMove 1s infinite;
+		}
+		@keyframes rotateMove{
+			0% {
+				transform: rotate(0deg)
+			}
+			100% {
+				transform: rotate(-360deg)
+			}
+		}
+		.circle-left {
+		    width: 50%;
+		    height: 100%;
+		    background: linear-gradient(to bottom, transparent, transparent, rgba(255, 255, 255, .1), #368afc, #1d7cfc, #1d7cfc, #036dfc, #036dfc);
+		    float: left;
+		}
+		.circle-right {
+		    width: 50%;
+		    height: 100%;
+		    float: right;
+		    background: linear-gradient(to bottom, #0357c9, #0357c9, #0362e2, #0362e2, #036dfc);
+		}
+		.ctn {
+			position: relative;
+			z-index: 10;
+			width: 100%;
+			height: 100%;
+			background-color: #1d7cfc;
+			border-radius: 50%;
+		}
+		.ctn img {
+			display: block;
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+		}
+	</style>
+</head>
+<body>
+	<div class="wraps">
+		<h4><a href="http://www.zhangxinxu.com/wordpress/2017/11/pure-css-colorful-circle/">参考网址</a></h4>
+		<div class="box">
+			<div id="circle" class="circle">
+			    <div class="circle-left"></div>
+			    <div class="circle-right"></div>
+			</div>
+			<div class="ctn">
+				<img src="./images/img.gif" alt="Σ(⊙▽⊙''a" title="O(∩_∩)O~~" />
+			</div>
+		</div>
+	</div>
+	<script>
+		let window_w = window.innerWidth;
+		let window_h = window.innerHeight;
+
+		let wraps = document.querySelector(".wraps");
+		wraps.style.height = window_h + "px";
+
+	</script>
+</body>
+</html>

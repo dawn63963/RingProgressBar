@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>360度旋转动画 Canvas篇</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		.wrap {
+			width: 100%;
+			padding: 100px;
+			border: yellowgreen 1px dashed;
+		}
+		.box {
+			padding: 10px;
+			border: red 1px dotted;
+		}
+		.myPhoto {
+			border: skyblue 1px dashed;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="box">
+			<canvas id="myPhoto" class="myPhoto" width="300px" height="300px"></canvas>
+		</div>
+	</div>
+	<script>
+		let window_W = window.innerWidth;
+		let window_H = window.innerHeight;
+		let wrap = document.querySelector(".wrap");
+		wrap.style.height = window_H + "px";
+
+		let c = document.getElementById("myPhoto");
+		let ctx = c.getContext("2d");
+
+		let x0 = 150; //中心圆、运行路径圆的横坐标
+		let y0 = 150; //中心圆、运行路径圆的纵坐标
+		let r = 80; //运行路径圆的半径
+		let d = 0; // 角度
+		let speed = .5; //速度
+
+		window.requestAnimationFrame(draw);
+		//  run
+		function draw () {
+			ctx.clearRect(0, 0, c.width, c.height);
+
+			// 中间的内容区
+			ctx.beginPath();
+			ctx.arc(x0, y0, 60, 0, 2*Math.PI);
+			ctx.fillStyle = "#1d7cfc";
+			ctx.fill();
+			ctx.closePath();
+
+			// 运动小球的运行路径
+			ctx.beginPath();
+			ctx.arc(x0, y0, 80, 0, 2*Math.PI);
+			ctx.strokeStyle = "#c4fc1d";
+			ctx.stroke();
+			ctx.closePath();
+			// 运动小球
+			d += speed;
+			if(d > 360) {
+				d = 0;
+			}
+			let x1 = x0 + r * Math.cos(d * Math.PI / 180); //运动小球的横坐标
+			let y1 = y0 + r * Math.sin(d * Math.PI / 180); //运动小球的纵坐标
+			ctx.beginPath();
+			ctx.arc(x1, y1, 10, 0, 2*Math.PI);
+			ctx.fillStyle = "#fc551d";
+			ctx.fill();
+			ctx.closePath();
+			window.requestAnimationFrame(draw);
+		}
+		draw();
+	</script>
+</body>
+</html>
